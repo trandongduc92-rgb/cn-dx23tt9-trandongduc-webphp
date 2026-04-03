@@ -17,6 +17,39 @@ Thiết kế website quản lý giao việc cho nhân viên công ty Nam Long
 - Import database
 - Chạy localhost
 
+## mình sẽ code php bằng visual studio code (vs code)
+1. cài visual studio code
+2. tao project "task quanlynhanvien_cty_Namlong"
+3. tạo file index.php
+
+## cài môi trường chạy php XAMPP
+1. mở XAMPP chạy apache,sql
+2. coppy project vào 
+C:\xampp\htdocs\
+cây reponsitory
+task quanlynhanvien_cty_Namlong/
+├── index.php
+├── config/
+├── controllers/
+├── models/
+├── views/
+├── assets/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
 # 👨‍🎓Sinh viên
 - Tên: [TRẦN ĐÔNG ĐỨC]
 
