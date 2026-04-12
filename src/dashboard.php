@@ -153,20 +153,109 @@ h3 {
     color: #fff;
     margin-bottom: 20px;
 }
+/* SIDEBAR PROFESSIONAL */
+.sidebar {
+    height: 100vh;
+    width: 190px;
+    position: fixed;
+    background: #0f172a;
+    padding: 20px 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* LOGO */
+.logo {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 30px;
+}
+
+.logo i {
+    font-size: 1.4rem;
+    color: #38bdf8;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.logo span {
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+}
+
+/* MENU */
+.menu a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    margin: 6px 5px;
+    border-radius: 8px;
+    color: #94a3b8;
+    text-decoration: none;
+    transition: 0.25s;
+    font-size: 0.85rem;
+}
+
+.menu a i {
+    font-size: 1rem;
+}
+
+/* HOVER */
+.menu a:hover {
+    background: #1e293b;
+    color: #fff;
+}
+
+/* ACTIVE */
+.menu a.active {
+    background: linear-gradient(135deg,#38bdf8,#6366f1);
+    color: #fff;
+}
+
+/* LOGOUT */
+.logout {
+    margin-top: auto;
+    color: #f87171 !important;
+}
+
+.logout:hover {
+    background: rgba(248,113,113,0.1);
+}
 </style>
 </head>
 
 <body>
 
 <div class="sidebar">
+
     <div class="logo">
-    <span class="logo-main">NAM</span>
-    <span class="logo-sub">LONG</span>
-</div>
-    <a href="dashboard.php"><i class="bi bi-speedometer2"></i> Dashboard</a>
-    <a href="task_list.php"><i class="bi bi-list-task"></i> Công việc</a>
-    <a href="task_create.php"><i class="bi bi-plus-square"></i> Tạo task</a>
-    <a href="logout.php"><i class="bi bi-box-arrow-right"></i> Logout</a>
+        <i class="bi bi-building"></i>
+        <span>NAM LONG</span>
+    </div>
+
+    <div class="menu">
+        <a href="dashboard.php">
+            <i class="bi bi-speedometer2"></i>
+            <span>Dashboard</span>
+        </a>
+
+        <a href="task_list.php">
+            <i class="bi bi-list-task"></i>
+            <span>Công việc</span>
+        </a>
+
+        <a href="task_create.php">
+            <i class="bi bi-plus-square"></i>
+            <span>Tạo task</span>
+        </a>
+
+        <a href="logout.php" class="logout">
+            <i class="bi bi-box-arrow-right"></i>
+            <span>Logout</span>
+        </a>
+    </div>
+
 </div>
 
 <div class="content-wrapper">
