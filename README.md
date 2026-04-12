@@ -34,7 +34,7 @@ task quanlynhanvien_cty_Namlong/
 ├── models/
 ├── views/
 ├── assets/
-## caì đặt visual studio tiến hành code
+## cài đặt visual studio tiến hành code
 1. code phần login cho trang web
    [ code]
    [```php
