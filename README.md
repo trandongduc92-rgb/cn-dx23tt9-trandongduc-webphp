@@ -19,25 +19,22 @@ Thiết kế website quản lý giao việc cho nhân viên công ty Nam Long
 
 ## mình sẽ code php bằng visual studio code (vs code)
 1. cài visual studio code
-2. tao project "task quanlynhanvien_cty_Namlong"
-3. tạo file index.php
+2. tao project "task_manager_namlong"
+
 
 ## cài môi trường chạy php XAMPP
 1. mở XAMPP chạy apache,sql
 2. coppy project vào 
 C:\xampp\htdocs\
 cây reponsitory
-task quanlynhanvien_cty_Namlong/
-├── index.php
+task_manager_namlong/
 ├── config/
 ├── controllers/
 ├── models/
 ├── views/
-├── assets/
+
 ## cài đặt visual studio tiến hành code
 1. code phần login cho trang web
-   [ code]
-   [```php
 <?php session_start(); ?>
 
 <!DOCTYPE html>
@@ -46,13 +43,8 @@ task quanlynhanvien_cty_Namlong/
     <meta charset="UTF-8">
     <title>Nam Long - Login</title>
 
-    <!-- Bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Icon -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-
-    <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
     <style>
@@ -67,7 +59,6 @@ task quanlynhanvien_cty_Namlong/
 
         .container-fluid { height: 100vh; }
 
-        /* LEFT */
         .left {
             display: flex;
             justify-content: center;
@@ -89,7 +80,6 @@ task quanlynhanvien_cty_Namlong/
             transition: transform 0.8s ease-in-out;
         }
 
-        /* RIGHT */
         .right {
             display: flex;
             justify-content: center;
@@ -145,50 +135,43 @@ task quanlynhanvien_cty_Namlong/
 <div class="container-fluid">
     <div class="row h-100">
 
-        <!-- LEFT: SLIDER -->
         <div class="col-md-6 left d-none d-md-flex">
-
             <div class="col-md-6 left d-none d-md-flex flex-column">
 
-    <div class="d-flex justify-content-center gap-4">
+                <div class="d-flex justify-content-center gap-4">
 
-        <!-- CEO -->
-        <div class="text-center">
-            <img src="../public/images/CEO.jpg" class="avatar">
-            <h6 class="mt-2">Trần Đông Đức</h6>
-            <p class="text-muted text-center mb-0" style="font-size:13px;">
-    <strong>CEO</strong><br>
-    Giám Đốc Đều Hành
-</p>
+                    <div class="text-center">
+                        <img src="../public/images/CEO.jpg" class="avatar">
+                        <h6 class="mt-2">Trần Đông Đức</h6>
+                        <p class="text-muted text-center mb-0" style="font-size:13px;">
+                            <strong>CEO</strong><br>
+                            Giám Đốc Đều Hành
+                        </p>
+                    </div>
+
+                    <div class="text-center">
+                        <img src="../public/images/CFO.jpg" class="avatar">
+                        <h6 class="mt-2">Nguyễn Quang Huy</h6>
+                        <p class="text-muted text-center mb-0" style="font-size:13px;">
+                            <strong>CFO</strong><br>
+                            Giám Đốc Tài Chính
+                        </p>
+                    </div>
+
+                    <div class="text-center">
+                        <img src="../public/images/QC.jpg" class="avatar">
+                        <h6 class="mt-2">Lê Hoàng Anh</h6>
+                        <p class="text-muted text-center mb-0" style="font-size:13px;">
+                            <strong>QMR</strong><br>
+                            Giám Đốc Chất Lượng
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
         </div>
 
-        <!-- CFO -->
-        <div class="text-center">
-            <img src="../public/images/CFO.jpg" class="avatar">
-            <h6 class="mt-2">Nguyễn Quang Huy</h6>
-            <p class="text-muted text-center mb-0" style="font-size:13px;">
-    <strong>CFO</strong><br>
-    Giám Đốc Tài Chính
-</p>
-        </div>
-
-        <!-- QUALITY -->
-        <div class="text-center">
-            <img src="../public/images/QC.jpg" class="avatar">
-            <h6 class="mt-2">Lê Hoàng Anh</h6>
-            <p class="text-muted text-center mb-0" style="font-size:13px;">
-    <strong>QMR</strong><br>
-    Giám Đốc Chất Lượng
-</p>
-        </div>
-
-    </div>
-
-</div>
-
-        </div>
-
-        <!-- RIGHT LOGIN -->
         <div class="col-md-6 right">
 
             <div class="login-box">
@@ -198,13 +181,11 @@ task quanlynhanvien_cty_Namlong/
 
                 <form method="POST" action="../controllers/AuthController.php">
 
-                    <!-- EMAIL -->
                     <div class="input-group mb-3">
                         <span class="input-group-text"><i class="fa fa-envelope"></i></span>
                         <input type="email" name="email" class="form-control" placeholder="Email" required>
                     </div>
 
-                    <!-- PASSWORD -->
                     <div class="input-group mb-3">
                         <span class="input-group-text"><i class="fa fa-lock"></i></span>
                         <input type="password" id="password" name="password" class="form-control" placeholder="Mật khẩu" required>
@@ -213,13 +194,11 @@ task quanlynhanvien_cty_Namlong/
                         </span>
                     </div>
 
-                    <!-- OPTIONS -->
                     <div class="d-flex justify-content-between extra mb-3">
                         <label><input type="checkbox"> Ghi nhớ</label>
                         <a href="#">Quên mật khẩu?</a>
                     </div>
 
-                    <!-- BUTTON -->
                     <button name="login" class="btn btn-login w-100">
                         Đăng nhập
                     </button>
@@ -244,14 +223,10 @@ function togglePass(){
 }
 </script>
 
-<!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
-```
-]
-
 
 
 
