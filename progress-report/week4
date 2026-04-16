@@ -1,1 +1,63 @@
 
+viết code phận update công việc 
+
+<?php
+include __DIR__ . '/../config/db.php';
+session_start();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    if(!isset($_SESSION['user'])){
+        header("Location: ../login.php");
+        exit();
+    }
+
+    $user_id = $_SESSION['user']['id'];
+
+    $task_id = $_POST['task_id'];
+    $progress = (int)$_POST['progress'];
+    $note = trim($_POST['note'] ?? '');
+
+    if ($progress <= 0) {
+        $status = 'todo';
+        $progress = 0;
+    } elseif ($progress < 100) {
+        $status = 'doing';
+    } else {
+        $status = 'done';
+        $progress = 100;
+    }
+
+    try {
+
+        if ($user_id >= 9) {
+            $stmt = $conn->prepare("
+                UPDATE tasks 
+                SET progress = ?, status = ?, note = ?
+                WHERE id = ? AND assigned_to = ?
+            ");
+            $stmt->execute([$progress, $status, $note, $task_id, $user_id]);
+
+        } else {
+            $stmt = $conn->prepare("
+                UPDATE tasks 
+                SET progress = ?, status = ?, note = ?
+                WHERE id = ?
+            ");
+            $stmt->execute([$progress, $status, $note, $task_id]);
+        }
+
+        $stmt = $conn->prepare("
+            INSERT INTO task_updates (task_id, user_id, progress, note) 
+            VALUES (?, ?, ?, ?)
+        ");
+        $stmt->execute([$task_id, $user_id, $progress, $note]);
+
+    } catch (Exception $e) {
+        echo "Lỗi: " . $e->getMessage();
+        exit();
+    }
+}
+
+header("Location: dashboard.php");
+exit;
