@@ -11,7 +11,7 @@ Thiết kế website quản lý giao việc cho nhân viên công ty Nam Long
 # Công cụ
 - PHP
 - MySQL
-  
+- Visusal studio coe 
 # Cách khởi chạy
 - Cài XAMPP
 - Import database
