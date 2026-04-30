@@ -168,16 +168,13 @@ body {
     border-radius: 12px;
     font-weight: 500;
 }
-
 form {
     width: 100%;
 }
-
 .container-box {
     width: 100%;
     max-width: 750px;
 }
-
 @media (max-width: 768px) {
     .header {
         text-align: center;
