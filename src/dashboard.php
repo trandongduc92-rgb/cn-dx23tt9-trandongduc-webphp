@@ -112,6 +112,7 @@ elseif($user_role == 'leader'){
 
 else{
 
+ 
     $stmt = $conn->prepare("SELECT COUNT(*) FROM tasks WHERE assigned_to = :id");
     $stmt->execute(['id' => $user_id]);
     $total = $stmt->fetchColumn();
@@ -130,7 +131,7 @@ else{
 }
 
 try {
-if($user_role != 'ceo'){
+   if($user_role != 'ceo'){
 
     $stmt = $conn->prepare("
         SELECT t.*, 
@@ -145,6 +146,7 @@ if($user_role != 'ceo'){
     $myTasks = [];
 }
 
+    // FIX N+1
     $stmt = $conn->prepare("
         SELECT tu.*, u.name 
         FROM task_updates tu
@@ -164,9 +166,9 @@ if($user_role != 'ceo'){
     $myTasks = [];
     $historyMap = [];
 }
-
 try {
 if($user_role == 'manager'){
+
 
     $stmt = $conn->prepare("
         SELECT t.*, u.name as staff_name
@@ -182,6 +184,7 @@ if($user_role == 'manager'){
 
 } elseif($user_role == 'leader'){
 
+
     $stmt = $conn->prepare("
         SELECT t.*, u.name as staff_name
         FROM tasks t
@@ -193,6 +196,7 @@ if($user_role == 'manager'){
 
 } elseif($user_role == 'ceo'){
 
+
     $stmt = $conn->query("
         SELECT t.*, u.name as staff_name
         FROM tasks t
@@ -201,6 +205,7 @@ if($user_role == 'manager'){
     ");
 
 } else {
+
 
     $staffTasks = [];
 }
@@ -273,7 +278,7 @@ $staffUpdates = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
 
 <style>
-body{
+    body{
     background:#f1f5f9;
 }
 .shake-modal{
@@ -287,7 +292,7 @@ body{
     75% { transform: translateX(-5px); }
     100% { transform: translateX(0); }
 }
-
+/* SIDEBAR */
 .sidebar{
     position:fixed;
     top:0;
@@ -341,17 +346,22 @@ body{
     font-size:18px;
 }
 
+
+
+/* CONTENT */
 .content-wrapper{
     margin-left:230px;
     padding:20px;
 }
 
+/* CARD đẹp hơn */
 .card-stats{
     border:none;
     border-radius:15px;
     box-shadow:0 5px 15px rgba(0,0,0,0.05);
 }
 
+/* TABLE */
 .table{
     background:#fff;
     border-radius:10px;
@@ -364,64 +374,65 @@ body{
 <audio id="errorSound">
     <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_115b9b1b6f.mp3?filename=error-126627.mp3">
 </audio>
-
 <div class="sidebar">
-<div class="logo">
-<i class="bi bi-building"></i>
-<span>NAM LONG</span>
-</div>
+    <div class="logo">
+        <i class="bi bi-building"></i>
+        <span>NAM LONG</span>
+    </div>
 
-<div class="menu">
-<a href="dashboard.php" class="active">
-<i class="bi bi-speedometer2"></i>
-<span>Dashboard</span>
-</a>
+    <div class="menu">
+    <a href="dashboard.php" class="active">
+        <i class="bi bi-speedometer2"></i>
+        <span>Dashboard</span>
+    </a>
 
 <?php if($user_role == 'staff'): ?>
 
 <a href="task_list.php?scope=my">
-<i class="bi bi-list-task"></i>
-<span>Công việc</span>
+    <i class="bi bi-list-task"></i>
+    <span>Công việc</span>
 </a>
 
 <?php elseif($user_role == 'leader' || $user_role == 'manager'): ?>
 
 <a href="task_list.php?scope=team">
-<i class="bi bi-list-task"></i>
-<span>Công việc</span>
+    <i class="bi bi-list-task"></i>
+    <span>Công việc</span>
 </a>
 
-<a href="<?= $user_role == 'staff' ? '#' : 'task_create.php' ?>">
-<i class="bi bi-plus-square"></i>
-<span>Tạo task</span>
+<a href="<?= $user_role == 'staff' ? '#' : 'task_create.php' ?>"
+   onclick="<?= $user_role == 'staff' ? 'showNoPermission(); return false;' : '' ?>">
+    <i class="bi bi-plus-square"></i>
+    <span>Tạo task</span>
 </a>
-
-<?php else: ?>
+<?php else: // CEO ?>
 
 <a href="task_list.php?scope=all">
-<i class="bi bi-list-task"></i>
-<span>Công việc</span>
+    <i class="bi bi-list-task"></i>
+    <span>Công việc</span>
 </a>
 
-<a href="<?= $user_role == 'staff' ? '#' : 'task_create.php' ?>">
-<i class="bi bi-plus-square"></i>
-<span>Tạo task</span>
+<a href="<?= $user_role == 'staff' ? '#' : 'task_create.php' ?>"
+   onclick="<?= $user_role == 'staff' ? 'showNoPermission(); return false;' : '' ?>">
+    <i class="bi bi-plus-square"></i>
+    <span>Tạo task</span>
 </a>
-
 <?php endif; ?>
 
 <a href="logout.php" class="text-danger">
-<i class="bi bi-box-arrow-right"></i>
-<span>Logout</span>
+    <i class="bi bi-box-arrow-right"></i>
+    <span>Logout</span>
 </a>
-</div>
+    </div>
 </div>
 
 <div class="content-wrapper">
 
-<h3>Xin chào, <span style="background: linear-gradient(45deg,#007cf0,#00dfd8);-webkit-background-clip: text;-webkit-text-fill-color: transparent;font-weight:600;">
+<h3>Xin chào, 
+<span style="background: linear-gradient(45deg,#007cf0,#00dfd8);-webkit-background-clip: text;-webkit-text-fill-color: transparent;font-weight:600;">
 <?= htmlspecialchars($user_name) ?>
-</span></h3>
+</span>
+</h3>
 
 <div class="row g-3 mb-3">
 <div class="col-md-4"><div class="card card-stats p-3 text-white" style="background: linear-gradient(135deg,#36d1dc,#5b86e5);"><h6>Tổng công việc</h6><h2><?= $total ?></h2></div></div>
@@ -429,8 +440,299 @@ body{
 <div class="col-md-4"><div class="card card-stats p-3 text-white" style="background: linear-gradient(135deg,#00c9ff,#92fe9d);"><h6>Hoàn thành</h6><h2><?= $done ?></h2></div></div>
 </div>
 
+<?php if($user_role != 'ceo'): ?>
+<div class="card p-3">
+<h5 class="text-center mb-2">Công việc của tôi</h5>
+
+<?php if(count($myTasks)==0): ?>
+<p class="text-muted text-center">Chưa có công việc nào</p>
+<?php else: ?>
+
+<div class="table-responsive">
+<table class="table table-hover">
+<thead class="table-light">
+<tr>
+<th>Tiêu đề</th>
+<th>Trạng thái</th>
+<th>Ngày tạo</th>
+<th>Deadline</th>
+<th>Cập nhật</th>
+</tr>
+</thead>
+
+<tbody>
+<?php foreach($myTasks as $t): ?>
+<tr onclick="<?= $user_role == 'staff' ? 'showNoPermission()' : 'toggleHistory('.$t['id'].')' ?>" 
+    style="cursor:pointer;">
+<td><?= htmlspecialchars($t['title']) ?></td>
+
+<td>
+<?php
+if($t['progress']==0){
+echo '<span class="badge bg-secondary">Chưa làm</span>';
+}elseif($t['progress']<100){
+echo '<span class="badge bg-warning text-dark">Đang làm</span>';
+}else{
+echo '<span class="badge bg-success">Hoàn thành</span>';
+}
+?>
+<div class="progress mt-1" style="height:6px;">
+<div class="progress-bar <?= $t['progress']==100 ? 'bg-success' : ($t['progress']>0 ? 'bg-warning' : 'bg-secondary') ?>" style="width: <?= $t['progress'] ?>%"></div>
+</div>
+</td>
+
+<td><?= date('d/m/Y', strtotime($t['created_at'] ?? date('Y-m-d'))) ?></td>
+
+<td><?= !empty($t['deadline']) ? date('d/m/Y', strtotime($t['deadline'])) : '<span class="text-muted">Chưa có</span>' ?></td>
+
+<td>
+<form method="POST" action="update_task.php" class="d-flex gap-1">
+<input type="hidden" name="task_id" value="<?= $t['id'] ?>">
+<input type="number" name="progress" value="<?= $t['progress'] ?? 0 ?>" min="0" max="100" class="form-control form-control-sm progress-input" style="width:70px">
+
+<button type="button" class="btn btn-sm btn-success"
+onclick="event.stopPropagation(); openModal(<?= $t['id'] ?>, this)">
+✔
+</button>
+</form>
+</td>
+</tr>
+
+<tr class="history-row" id="history-<?= $t['id'] ?>" style="display:none;">
+<td colspan="5">
+<div style="padding:10px 15px; background:#f8fafc; border-radius:10px;">
+
+<?php $updates = $historyMap[$t['id']] ?? []; ?>
+
+<?php if(count($updates) == 0): ?>
+<small class="text-muted">Chưa có cập nhật</small>
+<?php else: ?>
+<?php foreach($updates as $u): ?>
+<div style="font-size:0.8rem; margin-bottom:5px;">
+<b><?= htmlspecialchars($u['name']) ?></b>
+→ <?= $u['progress'] ?>%
+<span class="text-muted">(<?= date('d/m H:i', strtotime($u['created_at'])) ?>)</span>
+<br>
+<i><?= htmlspecialchars($u['note']) ?></i>
+</div>
+<?php endforeach; ?>
+<?php endif; ?>
+
+</div>
+</td>
+</tr>
+
+<?php endforeach; ?>
+</tbody>
+</table>
+</div>
+
+<?php endif; ?>
+</div>
+<?php endif; ?>
+<?php if($user_role != 'staff' && !empty($staffTasks)): ?>
+
+<div class="card p-3 mt-4">
+<h5 class="text-center mb-2">Công việc nhân viên</h5>
+<?php if(count($staffTasks)==0): ?>
+<p class="text-muted text-center">Chưa có công việc nhân viên</p>
+<?php else: ?>
+<div class="table-responsive">
+<table class="table table-hover">
+<thead class="table-light">
+<tr>
+<th>Nhân viên</th>
+<th>Tiêu đề</th>
+<th>Trạng thái</th>
+<th>Deadline</th>
+<th>Tiến độ</th>
+</tr>
+</thead>
+
+<tbody>
+<?php foreach($staffTasks as $t): ?>
+<tr onclick="toggleHistory(<?= $t['id'] ?>)" style="cursor:pointer;">
+
+<td>
+<span class="badge bg-dark">
+<?= htmlspecialchars($t['staff_name']) ?>
+</span>
+</td>
+
+<td><?= htmlspecialchars($t['title']) ?></td>
+
+<td>
+<?php
+if($t['progress']==0){
+echo '<span class="badge bg-secondary">Chưa làm</span>';
+}elseif($t['progress']<100){
+echo '<span class="badge bg-warning text-dark">Đang làm</span>';
+}else{
+echo '<span class="badge bg-success">Hoàn thành</span>';
+}
+?>
+<div class="progress mt-1" style="height:6px;">
+<div class="progress-bar 
+<?= $t['progress']==100 ? 'bg-success' : ($t['progress']>0 ? 'bg-warning' : 'bg-secondary') ?>" 
+style="width: <?= $t['progress'] ?>%">
+</div>
+</div>
+</td>
+<td>
+<?= !empty($t['deadline']) ? date('d/m/Y', strtotime($t['deadline'])) : '<span class="text-muted">Chưa có</span>' ?>
+</td>
+
+<td>
+<span class="badge bg-info">
+<?= $t['progress'] ?>%
+</span>
+</td>
+
+</tr>
+
+<tr class="history-row" id="history-<?= $t['id'] ?>" style="display:none;">
+<td colspan="5">
+<div style="padding:10px; background:#f1f5f9; border-radius:10px;">
+
+<?php $updates = $staffHistoryMap[$t['id']] ?? []; ?>
+
+<?php if(count($updates)==0): ?>
+<small class="text-muted">Chưa có cập nhật</small>
+<?php else: ?>
+<?php foreach($updates as $u): ?>
+<div style="font-size:0.8rem;">
+<b><?= htmlspecialchars($u['name']) ?></b>
+→ <?= $u['progress'] ?>%
+<span class="text-muted">(<?= date('d/m H:i', strtotime($u['created_at'])) ?>)</span>
+<br>
+<i><?= htmlspecialchars($u['note']) ?></i>
+</div>
+<?php endforeach; ?>
+<?php endif; ?>
+
+</div>
+</td>
+</tr>
+
+<?php endforeach; ?>
+</tbody>
+</table>
+</div>
+
+<?php endif; ?>
+</div>
+</div>
+
+<?php endif; ?> 
+
+<div class="modal fade" id="updateModal" tabindex="-1">
+<div class="modal-dialog modal-dialog-centered">
+<div class="modal-content">
+
+<div class="modal-header bg-primary text-white">
+<h5 class="modal-title">Cập nhật công việc</h5>
+<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+
+<form method="POST" action="update_task.php">
+<div class="modal-body">
+<input type="hidden" id="task_id_modal" name="task_id">
+<input type="hidden" id="progress_modal" name="progress">
+<textarea name="note" class="form-control" rows="4" required></textarea>
+</div>
+
+<div class="modal-footer">
+<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+<button type="submit" class="btn btn-success">Lưu</button>
+</div>
+</form>
+
+</div>
+</div>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+function openModal(taskId, btn){
+    let form = btn.closest('form');
+    let progress = form.querySelector('.progress-input').value;
+
+    document.getElementById('task_id_modal').value = taskId;
+    document.getElementById('progress_modal').value = progress;
+
+    new bootstrap.Modal(document.getElementById('updateModal')).show();
+}
+
+function toggleHistory(taskId){
+    let row = document.getElementById("history-" + taskId);
+    if(!row) return;
+    row.style.display = (row.style.display === "table-row") ? "none" : "table-row";
+}
+
+function showNoPermission(){
+    let modalEl = document.getElementById('noPermissionModal');
+
+
+    let sound = document.getElementById('errorSound');
+    if(sound){
+        sound.currentTime = 0;
+        sound.play().catch(()=>{}); 
+    }
+
+    new bootstrap.Modal(modalEl).show();
+}
+
+document.addEventListener("DOMContentLoaded", function(){
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('hidden.bs.modal', function () {
+            document.body.classList.remove('modal-open');
+            document.querySelectorAll('.modal-backdrop').forEach(el => el.remove());
+        });
+    });
+});
+</script>
+
+</div>
+
+<div class="modal fade" id="noPermissionModal" tabindex="-1">
+<div class="modal-dialog modal-dialog-centered">
+<div class="modal-content border-0 shadow-lg shake-modal" style="border-radius:15px; overflow:hidden;">
+
+<div class="modal-header text-white" style="background: linear-gradient(135deg,#ff416c,#ff4b2b);">
+<h5 class="modal-title">
+<i class="bi bi-shield-lock-fill"></i> Không có quyền
+</h5>
+<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+</div>
+
+<div class="modal-body text-center p-4">
+<i class="bi bi-x-circle-fill text-danger" style="font-size:50px;"></i>
+
+<h5 class="mt-3 fw-bold">Truy cập bị từ chối</h5>
+
+<p class="text-muted mb-0">
+Bạn không có quyền thực hiện hành động này.<br>
+Vui lòng liên hệ quản lý hoặc admin.
+</p>
+</div>
+
+<div class="modal-footer justify-content-center border-0 pb-4">
+<button class="btn btn-danger px-4" data-bs-dismiss="modal">
+Đã hiểu
+</button>
+</div>
+
+</div>
+</div>
+</div>
+<?php if(isset($_GET['error']) && $_GET['error'] == 'no_permission'): ?>
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+    showNoPermission();
+});
+</script>
+<?php endif; ?>
 </body>
 </html>
